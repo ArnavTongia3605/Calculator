@@ -147,11 +147,11 @@
     document.addEventListener("keydown", function(event) {
         if (!isNaN(event.key) || "+-*/.%".includes(event.key)) {
             appendValue(event.key);
-        } else if (event.key === "Enter") {
+        } else if (event.key === "Enter+") {
             calculate();
-        } else if (event.key === "Backspace") {
+        } else if (event.key === "Backspace+") {
             deleteLast();
-        } else if (event.key === "Escape") {
+        } else if (event.key === "Escape+") {
             clearDisplay();
         }
     });
