@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Basic Calculator</title>
+    <title>Advanced Calculator</title>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #1e1e1e, #2c3e50);
             font-family: Arial, sans-serif;
         }
 
         .calculator {
             background-color: #222;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            width: 260px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            width: 280px;
         }
 
         .display {
             width: 100%;
-            height: 50px;
+            height: 60px;
             background-color: #000;
-            color: #fff;
+            color: #0f0;
             text-align: right;
-            padding: 10px;
-            font-size: 20px;
-            border-radius: 5px;
+            padding: 15px;
+            font-size: 24px;
+            border-radius: 10px;
             margin-bottom: 15px;
             box-sizing: border-box;
+            overflow-x: auto;
         }
 
         .buttons {
@@ -40,11 +41,12 @@
         }
 
         button {
-            height: 50px;
+            height: 55px;
             font-size: 18px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         .number {
@@ -57,46 +59,103 @@
             color: white;
         }
 
+        .equal {
+            background-color: #27ae60;
+            color: white;
+            grid-column: span 2;
+        }
+
         .clear {
             background-color: red;
             color: white;
-            grid-column: span 4;
+        }
+
+        .delete {
+            background-color: #555;
+            color: white;
         }
 
         button:hover {
-            opacity: 0.8;
+            transform: scale(1.05);
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
 
-    <div class="calculator">
-        <div class="display">0</div>
-        
-        <div class="buttons">
-            <button class="clear">C</button>
+<div class="calculator">
+    <div class="display" id="display">0</div>
 
-            <button class="number">7</button>
-            <button class="number">8</button>
-            <button class="number">9</button>
-            <button class="operator">/</button>
+    <div class="buttons">
+        <button class="clear" onclick="clearDisplay()">AC</button>
+        <button class="delete" onclick="deleteLast()">DEL</button>
+        <button class="operator" onclick="appendValue('%')">%</button>
+        <button class="operator" onclick="appendValue('/')">/</button>
 
-            <button class="number">4</button>
-            <button class="number">5</button>
-            <button class="number">6</button>
-            <button class="operator">*</button>
+        <button class="number" onclick="appendValue('7')">7</button>
+        <button class="number" onclick="appendValue('8')">8</button>
+        <button class="number" onclick="appendValue('9')">9</button>
+        <button class="operator" onclick="appendValue('*')">*</button>
 
-            <button class="number">1</button>
-            <button class="number">2</button>
-            <button class="number">3</button>
-            <button class="operator">-</button>
+        <button class="number" onclick="appendValue('4')">4</button>
+        <button class="number" onclick="appendValue('5')">5</button>
+        <button class="number" onclick="appendValue('6')">6</button>
+        <button class="operator" onclick="appendValue('-')">-</button>
 
-            <button class="number">0</button>
-            <button class="number">.</button>
-            <button class="operator">=</button>
-            <button class="operator">+</button>
-        </div>
+        <button class="number" onclick="appendValue('1')">1</button>
+        <button class="number" onclick="appendValue('2')">2</button>
+        <button class="number" onclick="appendValue('3')">3</button>
+        <button class="operator" onclick="appendValue('+')">+</button>
+
+        <button class="number" onclick="appendValue('0')">0</button>
+        <button class="number" onclick="appendValue('.')">.</button>
+        <button class="equal" onclick="calculate()">=</button>
     </div>
+</div>
+
+<script>
+    const display = document.getElementById("display");
+
+    function appendValue(value) {
+        if (display.innerText === "0") {
+            display.innerText = value;
+        } else {
+            display.innerText += value;
+        }
+    }
+
+    function clearDisplay() {
+        display.innerText = "0";
+    }
+
+    function deleteLast() {
+        display.innerText = display.innerText.slice(0, -1);
+        if (display.innerText === "") {
+            display.innerText = "0";
+        }
+    }
+
+    function calculate() {
+        try {
+            display.innerText = eval(display.innerText);
+        } catch {
+            display.innerText = "Error";
+        }
+    }
+
+    // Keyboard Support
+    document.addEventListener("keydown", function(event) {
+        if (!isNaN(event.key) || "+-*/.%".includes(event.key)) {
+            appendValue(event.key);
+        } else if (event.key === "Enter") {
+            calculate();
+        } else if (event.key === "Backspace") {
+            deleteLast();
+        } else if (event.key === "Escape") {
+            clearDisplay();
+        }
+    });
+</script>
 
 </body>
 </html>
